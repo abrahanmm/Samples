@@ -37,6 +37,8 @@
         internal static Stadium Raymond_James_Stadium = new Stadium("Raymond James Stadium", "Tampa Bay", 65890, 27.975967f, -82.50335f, StadiumType.Outdoor);
         internal static Stadium Nissan_Stadium = new Stadium("Nissan Stadium", "Nashville", 6914, 36.166441f, -86.771253f, StadiumType.Outdoor);
         internal static Stadium FedEx_Field = new Stadium("FedEx Field", "Landover", 85000, 38.907652f, -76.864479f, StadiumType.Outdoor);
+        internal static Stadium Wembley_Stadium = new Stadium("Wembley Stadium", "London", 86000, 51.555833f, -0.279722f, StadiumType.RetractableDome);
+        internal static Stadium Estadio_Azteca = new Stadium("Estadio Azteca", "Mexico City", 87000, 19.302861f, -99.150528f, StadiumType.Outdoor);
 
         /// <summary>
         /// Initializes a new instance of a <see cref="Stadium"/> class.
