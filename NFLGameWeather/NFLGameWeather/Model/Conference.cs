@@ -3,7 +3,7 @@
     /// <summary>
     /// NFL's conferences.
     /// </summary>
-    internal enum Conference
+    public enum Conference
     {
         AFC, NFC
     }

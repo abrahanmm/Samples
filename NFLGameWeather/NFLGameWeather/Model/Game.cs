@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NFLGameWeather.Model
 {
-    internal class Game
+    public class Game
     {
-        internal static IReadOnlyCollection<Game> Schedule { get; } = new Game[] {
+        public static IReadOnlyCollection<Game> Schedule { get; } = new Game[] {
             new Game(1, "2018-09-06T20:20:00", Team.Falcons, Team.Eagles, Stadium.Lincoln_Financial_Field),
             new Game(1, "2018-09-09T13:00:00", Team.Bills, Team.Ravens, Stadium.MT_Bank_Stadium),
             new Game(1, "2018-09-09T13:00:00", Team.Steelers, Team.Browns, Stadium.FirstEnergy_Stadium),
@@ -275,14 +273,14 @@ namespace NFLGameWeather.Model
             this.Stadium = stadium;
         }
 
-        internal int Week { get; }
+        public int Week { get; }
 
-        internal DateTime Date { get; }
+        public DateTime Date { get; }
 
-        internal Team AwayTeam { get; }
+        public Team AwayTeam { get; }
 
-        internal Team HomeTeam { get; }
+        public Team HomeTeam { get; }
 
-        internal Stadium Stadium { get; }
+        public Stadium Stadium { get; }
     }
 }

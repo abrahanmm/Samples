@@ -3,7 +3,7 @@
     /// <summary>
     /// Indicate if the stadium is open or covered.
     /// </summary>
-    internal enum StadiumType
+    public enum StadiumType
     {
         Outdoor,
         Dome,

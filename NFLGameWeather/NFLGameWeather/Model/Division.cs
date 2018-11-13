@@ -1,6 +1,6 @@
 ﻿namespace NFLGameWeather.Model
 {
-    internal enum Division
+    public enum Division
     {
         North, South, East, West
     }

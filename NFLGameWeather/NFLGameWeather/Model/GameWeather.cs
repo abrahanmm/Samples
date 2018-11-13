@@ -4,7 +4,7 @@ namespace NFLGameWeather.Model
 {
     public class GameWeather
     {
-        internal GameWeather(Game game, Forecast forecast)
+        public GameWeather(Game game, Forecast forecast)
         {
             this.AwayTeam = game.AwayTeam.FullName;
             this.HomeTeam = game.HomeTeam.FullName;
