@@ -3,6 +3,7 @@ using NFLGameWeather.Model.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -44,6 +45,22 @@ namespace NFLGameWeatherTests.Model.Services
             Assert.Equal(expected.City, gameWeather.City);
 
             //Assert.Equal(expected, gameWeather);
+        }
+
+        [Fact]
+        public async Task GetGameWeatherAsync_TeamKeyIsEmpty_ArgumentNullException()
+        {
+            FirstVersionService service = new FirstVersionService();
+            ArgumentNullException exception = await Assert.ThrowsAsync<ArgumentNullException>(() => service.GetGameWeatherAsync(string.Empty));
+            Assert.Equal("Value cannot be null.\r\nParameter name: teamKey", exception.Message);
+        }
+
+        [Fact]
+        public async Task GetGameWeatherAsync_TeamKeyIsWrong_ArgumentException()
+        {
+            FirstVersionService service = new FirstVersionService();
+            ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() => service.GetGameWeatherAsync("GV"));
+            Assert.Equal("The key is not from any team.", exception.Message);
         }
     }
 }

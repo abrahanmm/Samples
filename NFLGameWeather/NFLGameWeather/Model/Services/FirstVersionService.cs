@@ -15,7 +15,7 @@ namespace NFLGameWeather.Model.Services
         public async Task<GameWeather> GetGameWeatherAsync(string teamKey)
         {
             if (string.IsNullOrWhiteSpace(teamKey))
-                throw new ArgumentNullException("The key of the team can not be null.");
+                throw new ArgumentNullException(nameof(teamKey));
 
             Team team = Team.GetTeams().Where(x => x.Key.Equals(teamKey.ToUpper())).FirstOrDefault();
 
