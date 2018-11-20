@@ -32,7 +32,7 @@ namespace NFLGameWeatherTests.Model.Services
             );
 
             FirstVersionService service = new FirstVersionService();
-            GameWeather gameWeather = await service.GetGameWeatherAsync("GB");
+            GameWeather gameWeather = await service.GetNextGameWeatherAsync("GB");
 
             Assert.Equal(expected.HomeTeam, gameWeather.HomeTeam);
             Assert.Equal(expected.AwayTeam, gameWeather.AwayTeam);
@@ -51,7 +51,7 @@ namespace NFLGameWeatherTests.Model.Services
         public async Task GetGameWeatherAsync_TeamKeyIsEmpty_ArgumentNullException()
         {
             FirstVersionService service = new FirstVersionService();
-            ArgumentNullException exception = await Assert.ThrowsAsync<ArgumentNullException>(() => service.GetGameWeatherAsync(string.Empty));
+            ArgumentNullException exception = await Assert.ThrowsAsync<ArgumentNullException>(() => service.GetNextGameWeatherAsync(string.Empty));
             Assert.Equal("Value cannot be null.\r\nParameter name: teamKey", exception.Message);
         }
 
@@ -59,7 +59,7 @@ namespace NFLGameWeatherTests.Model.Services
         public async Task GetGameWeatherAsync_TeamKeyIsWrong_ArgumentException()
         {
             FirstVersionService service = new FirstVersionService();
-            ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() => service.GetGameWeatherAsync("GV"));
+            ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() => service.GetNextGameWeatherAsync("GV"));
             Assert.Equal("The key is not from any team.", exception.Message);
         }
     }

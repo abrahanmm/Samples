@@ -12,7 +12,7 @@ namespace NFLGameWeather.Model.Services
 {
     public class FirstVersionService
     {
-        public async Task<GameWeather> GetGameWeatherAsync(string teamKey)
+        public async Task<GameWeather> GetNextGameWeatherAsync(string teamKey)
         {
             if (string.IsNullOrWhiteSpace(teamKey))
                 throw new ArgumentNullException(nameof(teamKey));

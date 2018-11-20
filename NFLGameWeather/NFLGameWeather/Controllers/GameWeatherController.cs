@@ -7,13 +7,19 @@ namespace NFLGameWeather.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FirstVersionController : Controller
+    public class GameWeatherController : Controller
     {
+        private IGameWeatherService GameWeatherService { get; }
+
+        public GameWeatherController(IGameWeatherService gameWeatherService)
+        {
+            this.GameWeatherService = gameWeatherService;
+        }
+
         [HttpGet("{teamKey}")]
         public async Task<ActionResult<GameWeather>> Get(string teamKey)
         {
-            var service = new FirstVersionService();
-            return await service.GetNextGameWeatherAsync(teamKey);
+            return await this.GameWeatherService.GetNextGameWeatherAsync(teamKey);
         }
     }
 }
