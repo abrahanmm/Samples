@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
 using NFLGameWeather.Model;
 using NFLGameWeather.Model.Services;
 using System;
@@ -33,8 +34,9 @@ namespace NFLGameWeatherTests.Model.Services
 
             var mockForecastService = new Mock<IForecastService>();
             mockForecastService.Setup(x => x.GetForecastAsync(It.IsAny<Stadium>())).Returns(Task.FromResult<Forecast>(expected.Forecast));
+            var mockLogger = new Mock<ILogger<GameWeatherService>>();
 
-            GameWeatherService service = new GameWeatherService(mockForecastService.Object);
+            GameWeatherService service = new GameWeatherService(mockForecastService.Object, mockLogger.Object);
             GameWeather gameWeather = await service.GetNextGameWeatherAsync("GB");
 
             Assert.Equal(expected.HomeTeam, gameWeather.HomeTeam);
@@ -54,7 +56,8 @@ namespace NFLGameWeatherTests.Model.Services
         public async Task GetGameWeatherAsync_TeamKeyIsEmpty_ArgumentNullException()
         {            
             var mockForecastService = new Mock<IForecastService>();
-            GameWeatherService service = new GameWeatherService(mockForecastService.Object);
+            var mockLogger = new Mock<ILogger<GameWeatherService>>();
+            GameWeatherService service = new GameWeatherService(mockForecastService.Object, mockLogger.Object);
 
             ArgumentNullException exception = await Assert.ThrowsAsync<ArgumentNullException>(() => service.GetNextGameWeatherAsync(string.Empty));
             Assert.Equal("Value cannot be null.\r\nParameter name: teamKey", exception.Message);
@@ -64,7 +67,8 @@ namespace NFLGameWeatherTests.Model.Services
         public async Task GetGameWeatherAsync_TeamKeyIsWrong_ArgumentException()
         {
             var mockForecastService = new Mock<IForecastService>();
-            GameWeatherService service = new GameWeatherService(mockForecastService.Object);
+            var mockLogger = new Mock<ILogger<GameWeatherService>>();
+            GameWeatherService service = new GameWeatherService(mockForecastService.Object, mockLogger.Object);
 
             ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() => service.GetNextGameWeatherAsync("GV"));
             Assert.Equal("The key is not from any team.", exception.Message);
