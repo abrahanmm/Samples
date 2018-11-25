@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Internal;
 using Moq;
 using NFLGameWeather.Model;
@@ -10,10 +11,10 @@ using Xunit;
 
 namespace NFLGameWeatherTests.Model.Services
 {
-    public class GameWeatherServiceTest
+    public class GameWeatherService_GetGameWeatherAsync_Should
     {
         [Fact]
-        public async Task GetGameWeatherAsync_TeamKeyIsOk_ForecastFound()
+        public async Task ForecastFound_When_TeamKeyIsOk()
         {
             // Arrange
             Game expectedGame = Game.Schedule
@@ -44,8 +45,6 @@ namespace NFLGameWeatherTests.Model.Services
             // Assert
             mockForecastService.Verify(m => m.GetForecastAsync(It.IsAny<float>(), It.IsAny<float>(), It.IsAny<DateTime>()), Times.Once);
 
-            // The commented line don't work because LogInformation is a extension method.
-            // mockLogger.Verify(m => m.LogInformation(It.IsAny<string>()), Times.Once);
             mockLogger.Verify(
                 m => m.Log(
                     LogLevel.Information,
@@ -56,22 +55,11 @@ namespace NFLGameWeatherTests.Model.Services
                 )
             );
 
-            Assert.Equal(expected.HomeTeam, gameWeather.HomeTeam);
-            Assert.Equal(expected.AwayTeam, gameWeather.AwayTeam);
-            Assert.Equal(expected.Stadium, gameWeather.Stadium);
-            Assert.Equal(expected.Date, gameWeather.Date);
-            Assert.Equal(expected.Forecast.Day, gameWeather.Forecast.Day);
-            Assert.Equal(expected.Forecast.Night, gameWeather.Forecast.Night);
-            Assert.Equal(expected.Forecast.Maximum, gameWeather.Forecast.Maximum);
-            Assert.Equal(expected.Forecast.Minimum, gameWeather.Forecast.Minimum);
-            Assert.Equal(expected.City, gameWeather.City);
-
-            // The next line don't work because expected and gameWeather are not the same object (reference) despite having the same properties.
-            //Assert.Equal(expected, gameWeather);
+            gameWeather.Should().BeEquivalentTo(expected);
         }
 
         [Fact]
-        public async Task GetGameWeatherAsync_TeamKeyIsEmpty_ArgumentNullException()
+        public void ThrowAnArgumentNullException_When_TeamKeyIsEmpty()
         {
             // Arrange
             var mockForecastService = new Mock<IForecastService>();
@@ -79,10 +67,10 @@ namespace NFLGameWeatherTests.Model.Services
             GameWeatherService service = new GameWeatherService(mockForecastService.Object, mockLogger.Object);
 
             // Act and assert
-            ArgumentNullException exception = await Assert.ThrowsAsync<ArgumentNullException>(() => service.GetNextGameWeatherAsync(string.Empty));
+            Func<Task> func = () => service.GetNextGameWeatherAsync(string.Empty);
 
             // Assert
-            Assert.Equal("Value cannot be null.\r\nParameter name: teamKey", exception.Message);
+            func.Should().Throw<ArgumentNullException>().WithMessage("Value cannot be null.\r\nParameter name: teamKey");
             mockLogger.Verify(
                 m => m.Log(
                     LogLevel.Warning,
@@ -95,7 +83,7 @@ namespace NFLGameWeatherTests.Model.Services
         }
 
         [Fact]
-        public async Task GetGameWeatherAsync_TeamKeyIsWrong_ArgumentException()
+        public void ThrowAnArgumentException_When_TeamKeyIsWrong()
         {
             // Arrange
             var mockForecastService = new Mock<IForecastService>();
@@ -103,10 +91,11 @@ namespace NFLGameWeatherTests.Model.Services
             GameWeatherService service = new GameWeatherService(mockForecastService.Object, mockLogger.Object);
 
             // Act and assert
-            ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() => service.GetNextGameWeatherAsync("GV"));
+            Func<Task> func = () => service.GetNextGameWeatherAsync("GV");
 
             // Assert
-            Assert.Equal("The key is not from any team.", exception.Message);
+            func.Should().Throw<ArgumentException>().WithMessage("The key is not from any team.");
+
             mockLogger.Verify(
                 m => m.Log(
                     LogLevel.Warning,
