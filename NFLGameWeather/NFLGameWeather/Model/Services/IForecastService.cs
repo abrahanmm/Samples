@@ -7,6 +7,6 @@ namespace NFLGameWeather.Model.Services
 {
     public interface IForecastService
     {
-        Task<Forecast> GetForecastAsync(Stadium stadium);
+        Task<Forecast> GetForecastAsync(float geoLatitude, float geoLongitude, DateTime date);
     }
 }

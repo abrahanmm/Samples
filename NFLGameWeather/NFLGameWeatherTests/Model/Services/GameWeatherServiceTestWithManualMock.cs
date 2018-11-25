@@ -1,16 +1,14 @@
-﻿using NFLGameWeather.Model;
+﻿using Microsoft.Extensions.Logging;
+using NFLGameWeather.Model;
 using NFLGameWeather.Model.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Authentication;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace NFLGameWeatherTests.Model.Services
 {
-    public class FirstVersionServiceTests
+    public class GameWeatherServiceTestWithManualMock
     {
         [Fact]
         public async Task GetGameWeatherAsync_TeamKeyIsOk_ForecastFound()
@@ -32,7 +30,10 @@ namespace NFLGameWeatherTests.Model.Services
                 }
             );
 
-            FirstVersionService service = new FirstVersionService();
+            var mockForecastService = new MockForecastService(expected.Forecast);
+            var mockLogger = new MockLogger();
+
+            GameWeatherService service = new GameWeatherService(mockForecastService, mockLogger);
 
             // Act
             GameWeather gameWeather = await service.GetNextGameWeatherAsync(Team.Packers.Key);
@@ -54,17 +55,64 @@ namespace NFLGameWeatherTests.Model.Services
         [Fact]
         public async Task GetGameWeatherAsync_TeamKeyIsEmpty_ArgumentNullException()
         {
-            FirstVersionService service = new FirstVersionService();
+            // Arrange
+            var mockForecastService = new MockForecastService(null);
+            var mockLogger = new MockLogger();
+            GameWeatherService service = new GameWeatherService(mockForecastService, mockLogger);
+
+            // Act and assert
             ArgumentNullException exception = await Assert.ThrowsAsync<ArgumentNullException>(() => service.GetNextGameWeatherAsync(string.Empty));
+
+            // Assert
             Assert.Equal("Value cannot be null.\r\nParameter name: teamKey", exception.Message);
         }
 
         [Fact]
         public async Task GetGameWeatherAsync_TeamKeyIsWrong_ArgumentException()
         {
-            FirstVersionService service = new FirstVersionService();
+            // Arrange
+            var mockForecastService = new MockForecastService(null);
+            var mockLogger = new MockLogger();
+            GameWeatherService service = new GameWeatherService(mockForecastService, mockLogger);
+
+            // Act and assert
             ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() => service.GetNextGameWeatherAsync("GV"));
+
+            // Assert
             Assert.Equal("The key is not from any team.", exception.Message);
         }
     }
+
+    public class MockForecastService : IForecastService
+    {
+        public Forecast Forecast { get; }
+
+        public MockForecastService(Forecast forecast)
+        {
+            this.Forecast = forecast;
+        }
+
+        public Task<Forecast> GetForecastAsync(float geoLatitude, float geoLongitude, DateTime date)
+        {
+            return Task.FromResult(this.Forecast);
+        }
+    }
+
+    public class MockLogger : ILogger<GameWeatherService>
+    {
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return true;
+        }
+
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        {
+        }
+    }
 }
+

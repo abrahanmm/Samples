@@ -43,7 +43,7 @@ namespace NFLGameWeather.Model.Services
                 throw new ArgumentException("This team has not more games.");
             }
 
-            Forecast forecast = await this.ForecastService.GetForecastAsync(game.Stadium);
+            Forecast forecast = await this.ForecastService.GetForecastAsync(game.Stadium.GeoLatitude, game.Stadium.GeoLongitude, game.Date);
 
             this.Logger.LogInformation($"Found forecast for the game {game.AwayTeam.FullName} vs {game.HomeTeam.FullName}.");
 
