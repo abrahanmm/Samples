@@ -14,7 +14,7 @@ namespace NFLGameWeatherTests.Model.Services
     public class GameWeatherService_GetGameWeatherAsync_Should
     {
         [Fact]
-        public async Task ForecastFound_When_TeamKeyIsOk()
+        public async Task FindForecast_When_TeamKeyIsOkAndGameExist()
         {
             // Arrange
             Game expectedGame = Game.Schedule

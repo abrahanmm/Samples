@@ -17,7 +17,7 @@ namespace NFLGameWeatherTests.Model.Services
         {
             // Arrange
             Game expectedGame = Game.Schedule
-               .Where(x => x.HomeTeam.Equals(Team.Packers) || x.AwayTeam.Equals(Team.Packers))
+               .Where(x => x.HomeTeam.Equals(Team.Texans) || x.AwayTeam.Equals(Team.Texans))
                .Where(x => x.Date.Date > DateTime.UtcNow.AddDays(-1).Date)
                .FirstOrDefault();
 
@@ -25,17 +25,17 @@ namespace NFLGameWeatherTests.Model.Services
                 expectedGame,
                 new Forecast()
                 {
-                    Minimum = "9,3° C",
-                    Maximum = "12,5° C",
-                    Day = "Showers",
-                    Night = "Mostly cloudy"
+                    Minimum = "5,1° C",
+                    Maximum = "22,6° C",
+                    Day = "Mostly cloudy",
+                    Night = "Partly cloudy"
                 }
             );
 
             FirstVersionService service = new FirstVersionService();
 
             // Act
-            GameWeather gameWeather = await service.GetNextGameWeatherAsync(Team.Packers.Key);
+            GameWeather gameWeather = await service.GetNextGameWeatherAsync(Team.Texans.Key);
 
             // Assert
             Assert.Equal(expected.HomeTeam, gameWeather.HomeTeam);
