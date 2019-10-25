@@ -97,7 +97,7 @@ namespace NFLGameWeather.Model
         /// </summary>
         public Stadium Stadium { get; set; }
 
-        public static IReadOnlyCollection<Team> GetTeams()
+        public static IReadOnlyCollection<Team> GetAll()
         {
             return new[]
             {

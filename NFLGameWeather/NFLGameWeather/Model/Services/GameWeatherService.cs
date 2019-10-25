@@ -24,7 +24,7 @@ namespace NFLGameWeather.Model.Services
                 throw new ArgumentNullException(nameof(teamKey));
             }
 
-            Team team = Team.GetTeams().Where(x => x.Key.Equals(teamKey.ToUpper())).FirstOrDefault();
+            Team team = Team.GetAll().Where(x => x.Key.Equals(teamKey.ToUpper())).FirstOrDefault();
 
             if (team is null)
             {

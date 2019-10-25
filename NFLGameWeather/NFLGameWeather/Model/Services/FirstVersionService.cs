@@ -17,7 +17,7 @@ namespace NFLGameWeather.Model.Services
             if (string.IsNullOrWhiteSpace(teamKey))
                 throw new ArgumentNullException(nameof(teamKey));
 
-            Team team = Team.GetTeams().Where(x => x.Key.Equals(teamKey.ToUpper())).FirstOrDefault();
+            Team team = Team.GetAll().Where(x => x.Key.Equals(teamKey.ToUpper())).FirstOrDefault();
 
             if (team is null)
                 throw new ArgumentException("The key is not from any team.");

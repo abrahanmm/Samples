@@ -1,4 +1,6 @@
-﻿namespace NFLGameWeather.Model
+﻿using System.Collections.Generic;
+
+namespace NFLGameWeather.Model
 {
     /// <summary>
     /// Represents a stadium where play a NFL's team.
@@ -88,5 +90,45 @@
         /// Type of the stadium (open or covered).
         /// </summary>
         public StadiumType Type { get; set; }
+
+        public static IReadOnlyCollection<Stadium> GetAll()
+        {
+            return new[]
+            {
+                U_of_Phoenix_Stadium,
+                Mercedes_Benz_Stadium,
+                MT_Bank_Stadium,
+                New_Era_Field,
+                Bank_of_America_Stadium,
+                Soldier_Field,
+                Paul_Brown_Stadium,
+                FirstEnergy_Stadium,
+                ATT_Stadium,
+                Broncos_Stadium_at_Mile_High,
+                Ford_Field,
+                Lambeau_Field,
+                NRG_Stadium,
+                Lucas_Oil_Stadium,
+                TIAA_Bank_Field,
+                Arrowhead_Stadium,
+                StubHub_Center,
+                Los_Angeles_Memorial_Coliseum,
+                Hard_Rock_Stadium,
+                US_Bank_Stadium,
+                Gillette_Stadium,
+                Mercedes_Benz_Superdome,
+                MetLife_Stadium,
+                Oakland_Coliseum,
+                Lincoln_Financial_Field,
+                Heinz_Field,
+                CenturyLink_Field,
+                Levis_Stadium,
+                Raymond_James_Stadium,
+                Nissan_Stadium,
+                FedEx_Field,
+                Wembley_Stadium,
+                Estadio_Azteca
+            };
+        }
     }
 }
